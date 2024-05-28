@@ -1,9 +1,9 @@
 # TODO LIST OF KNOWN ISSUES
 ====================================
 
-## CreateUserAction, 
+## CreateUserAction
 * No unit tests
-* persist+flush I't rather move to UserRepository
+* persist+flush I'd rather move to UserRepository
 * Naming 
 
 ## Logout
