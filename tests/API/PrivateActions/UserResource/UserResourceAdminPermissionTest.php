@@ -11,7 +11,7 @@ class UserResourceAdminPermissionTest extends AbstractAuthenticatedApiTestCase
     public const USER_NAME = UserFixtures::ADMIN_USER_NAME;
     public const PASSWORD = UserFixtures::ADMIN_PASSWORD;
     public const COLLECTION_URL = '/api/users';
-    public const SINGLE_URL = '/api/users/1';
+    public const SINGLE_URL = '/api/users/2';
 
     protected function getUsername(): string
     {
@@ -65,9 +65,9 @@ class UserResourceAdminPermissionTest extends AbstractAuthenticatedApiTestCase
         $this->assertResponseIsSuccessful();
         $data = json_decode($response);
         $this->assertEquals('/api/contexts/User', $data->{'@context'});
-        $this->assertEquals('/api/users/1', $data->{'@id'});
+        $this->assertEquals(self::SINGLE_URL, $data->{'@id'});
         $this->assertEquals('User', $data->{'@type'});
-        $this->assertEquals('admin', $data->username);
+        $this->assertEquals('joe', $data->username);
     }
 
     public function testDeleteSingle(): void
@@ -84,7 +84,7 @@ class UserResourceAdminPermissionTest extends AbstractAuthenticatedApiTestCase
             self::SINGLE_URL, [
                 'headers' => ['Content-Type' => 'application/merge-patch+json'],
                 'json' => [
-                    'username' => 'admin2',
+                    'username' => 'joe2',
                     'password' => 'some_password',
                     'roles' => [User::ROLE_USER],
                 ],
@@ -94,8 +94,8 @@ class UserResourceAdminPermissionTest extends AbstractAuthenticatedApiTestCase
         $this->assertResponseIsSuccessful();
         $data = json_decode($response);
         $this->assertEquals('/api/contexts/User', $data->{'@context'});
-        $this->assertEquals('/api/users/1', $data->{'@id'});
+        $this->assertEquals(self::SINGLE_URL, $data->{'@id'});
         $this->assertEquals('User', $data->{'@type'});
-        $this->assertEquals('admin2', $data->username);
+        $this->assertEquals('joe2', $data->username);
     }
 }

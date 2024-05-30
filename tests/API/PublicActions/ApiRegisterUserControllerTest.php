@@ -16,7 +16,7 @@ class ApiRegisterUserControllerTest extends ApiTestCase
             self::URL,
             [
                 'json' => [
-                    'username' => 'joe',
+                    'username' => 'joe2',
                     'password' => 'new_password',
                 ],
             ]

@@ -11,8 +11,7 @@
 * JWT token probably should be removed from the DB on logout action
 
 ## API Tests
-* All Api tests are marked as Risky
+* All Api Platform tests are marked as Risky
 
 ## API
-* Permission Admin+Owner should be moved to voter
 * CRUD methods write not hashed password directrly to the DB

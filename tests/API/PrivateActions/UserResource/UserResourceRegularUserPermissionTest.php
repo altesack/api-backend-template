@@ -58,9 +58,9 @@ class UserResourceRegularUserPermissionTest extends AbstractAuthenticatedApiTest
         $this->assertResponseIsSuccessful();
         $data = json_decode($response);
         $this->assertEquals('/api/contexts/User', $data->{'@context'});
-        $this->assertEquals('/api/users/1', $data->{'@id'});
+        $this->assertEquals(self::SINGLE_URL_ME, $data->{'@id'});
         $this->assertEquals('User', $data->{'@type'});
-        $this->assertEquals('admin', $data->username);
+        $this->assertEquals(UserFixtures::REGULAR_USER_NAME, $data->username);
     }
 
     public function testDeleteSingle(): void
@@ -77,7 +77,7 @@ class UserResourceRegularUserPermissionTest extends AbstractAuthenticatedApiTest
             self::SINGLE_URL_ME, [
                 'headers' => ['Content-Type' => 'application/merge-patch+json'],
                 'json' => [
-                    'username' => 'admin2',
+                    'username' => 'joe2',
                     'password' => 'some_password',
                     'roles' => [User::ROLE_USER],
                 ],
@@ -87,15 +87,15 @@ class UserResourceRegularUserPermissionTest extends AbstractAuthenticatedApiTest
         $this->assertResponseIsSuccessful();
         $data = json_decode($response);
         $this->assertEquals('/api/contexts/User', $data->{'@context'});
-        $this->assertEquals('/api/users/1', $data->{'@id'});
+        $this->assertEquals(self::SINGLE_URL_ME, $data->{'@id'});
         $this->assertEquals('User', $data->{'@type'});
-        $this->assertEquals('admin2', $data->username);
+        $this->assertEquals('joe2', $data->username);
     }
 
     public function testGetSingleNotMe(): void
     {
         $this->expectException(ClientException::class);
-        $data = static::createClient()->request('GET', self::SINGLE_URL_NOT_ME)->getContent();
+        $data = $this->createClientWithCredentials()->request('GET', self::SINGLE_URL_NOT_ME)->getContent();
         $this->assertEquals(401, $data['code']);
     }
 

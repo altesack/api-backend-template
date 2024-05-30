@@ -3,26 +3,26 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use OpenApi\Attributes\Delete;
-use OpenApi\Attributes\Get;
-use OpenApi\Attributes\Patch;
-use OpenApi\Attributes\Post;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'users')]
-// @TODO !!!Permissions!!! Voter
-
-#[ApiResource(security: "is_granted('ROLE_ADMIN')")]
+#[ApiResource]
+#[GetCollection(security: "is_granted('ROLE_ADMIN')")]
 #[Post(security: "is_granted('ROLE_ADMIN')")]
-#[Get(security: "is_granted('ROLE_ADMIN') or object == user")]
-#[Patch(security: "is_granted('ROLE_ADMIN') or object == user")]
-#[Delete(security: "is_granted('ROLE_ADMIN') or object == user")]
+#[Get(security: "is_granted('USER_GET', object)")]
+#[Patch(security: "is_granted('USER_UPDATE', object)")]
+#[Delete(security: "is_granted('USER_DELETE', object)")]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     final public const ROLE_USER = 'ROLE_USER';
@@ -107,20 +107,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     // /**
-    //  * Returns the salt that was originally used to encode the password.
-    //  *
-    //  * {@inheritdoc}
-    //  */
-    // public function getSalt(): ?string
-    // {
-    //     // We're using bcrypt in security.yaml to encode the password, so
-    //     // the salt value is built-in and you don't have to generate one
-    //     // See https://en.wikipedia.org/wiki/Bcrypt
-
-    //     return null;
-    // }
-
-    // /**
     //  * Removes sensitive data from the user.
     //  *
     //  * {@inheritdoc}
@@ -131,21 +117,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    // /**
-    //  * @return array{int|null, string|null, string|null}
-    //  */
-    // public function __serialize(): array
-    // {
-    //     // add $this->salt too if you don't use Bcrypt or Argon2i
-    //     return [$this->id, $this->username, $this->password];
-    // }
-
-    // /**
-    //  * @param array{int|null, string, string} $data
-    //  */
-    // public function __unserialize(array $data): void
-    // {
-    //     // add $this->salt too if you don't use Bcrypt or Argon2i
-    //     [$this->id, $this->username, $this->password] = $data;
-    // }
+    public function isAdmin(): bool
+    {
+        return in_array(self::ROLE_ADMIN, $this->roles);
+    }
 }
