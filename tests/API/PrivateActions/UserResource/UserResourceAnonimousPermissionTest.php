@@ -1,42 +1,41 @@
 <?php
 
-namespace App\Tests\API\PrivateActions;
+namespace App\Tests\API\PrivateActions\UserResource;
 
-use App\Entity\User;
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
+use App\Entity\User;
 use Symfony\Component\HttpClient\Exception\ClientException;
 
-class ApiResourceUserNotLoggedTest extends ApiTestCase
+class UserResourceAnonimousPermissionTest extends ApiTestCase
 {
-    const COLLECTION_URL = '/api/users';
-    const SINGLE_URL = '/api/users/1';
-    
+    public const COLLECTION_URL = '/api/users';
+    public const SINGLE_URL = '/api/users/1';
+
     public function testGetCollection(): void
     {
         $this->expectException(ClientException::class);
         $data = static::createClient()->request('GET', self::COLLECTION_URL)->getContent();
         $this->assertEquals(401, $data['code']);
     }
-    // public function testPostNew(): void
-    // {
-    //     $this->expectException(ClientException::class);
-    //     $data = static::createClient()->request(
-    //         'POST', 
-    //         '/api/users',             
-    //         // [
-    //         //     'json' => [
-    //         //         '@context' => '/api/contexts/User',
-    //         //         '@id' => '/api/users',
-    //         //         '@type'=> 'User',                
-    //         //         'username' => 'new_joe',
-    //         //         'password' => 'some_password',
-    //         //         'roles' => [User::ROLE_USER]
-    //         //     ]
-    //         // ]
-    //         )
-    //         ->getContent();
-    //     $this->assertEquals(401, $data['code']);
-    // }
+
+    public function testPostNew(): void
+    {
+        $this->expectException(ClientException::class);
+        $data = static::createClient()->request(
+            'POST',
+            '/api/users',
+            [
+                'headers' => ['Content-Type' => 'application/ld+json'],
+                'json' => [
+                    'username' => 'new_joe',
+                    'password' => 'some_password',
+                    'roles' => [User::ROLE_USER],
+                ],
+            ]
+        )
+            ->getContent();
+        $this->assertEquals(401, $data['code']);
+    }
 
     public function testGetSingle(): void
     {
@@ -44,17 +43,18 @@ class ApiResourceUserNotLoggedTest extends ApiTestCase
         $data = static::createClient()->request('GET', self::SINGLE_URL)->getContent();
         $this->assertEquals(401, $data['code']);
     }
+
     public function testDeleteSingle(): void
     {
         $this->expectException(ClientException::class);
         $data = static::createClient()->request('DELETE', self::SINGLE_URL)->getContent();
         $this->assertEquals(401, $data['code']);
     }
+
     public function testPostSingle(): void
     {
         $this->expectException(ClientException::class);
         $data = static::createClient()->request('PATCH', self::SINGLE_URL)->getContent();
         $this->assertEquals(401, $data['code']);
     }
-
 }

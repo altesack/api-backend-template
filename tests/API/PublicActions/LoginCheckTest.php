@@ -3,13 +3,11 @@
 namespace App\Tests\API\PublicActions;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpClient\Exception\ClientException;
 
 class LoginCheckTest extends ApiTestCase
 {
-    const URL = '/api/login_check';
-
+    public const URL = '/api/login_check';
 
     public function testWrongLogin(): void
     {
@@ -21,7 +19,7 @@ class LoginCheckTest extends ApiTestCase
                 'json' => [
                     'username' => 'joe',
                     'password' => 'wrong_password',
-                ]
+                ],
             ]
         );
         $this->expectException(ClientException::class);
@@ -40,12 +38,11 @@ class LoginCheckTest extends ApiTestCase
                 'json' => [
                     'username' => 'admin',
                     'password' => '111',
-                ]
+                ],
             ]
         );
-        
+
         $data = json_decode($client->getResponse()->getContent(), true);
         $this->assertArrayHasKey('token', $data);
     }
-
 }

@@ -1,19 +1,18 @@
 <?php
+
 namespace App\Entity;
 
-use OpenApi\Attributes\Get;
-use OpenApi\Attributes\Put;
-use OpenApi\Attributes\Post;
-use OpenApi\Attributes\Patch;
-use Doctrine\DBAL\Types\Types;
-use OpenApi\Attributes\Delete;
-use Doctrine\ORM\Mapping as ORM;
-use App\Repository\UserRepository;
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\GetCollection;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Security\Core\User\UserInterface;
+use App\Repository\UserRepository;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Attributes\Delete;
+use OpenApi\Attributes\Get;
+use OpenApi\Attributes\Patch;
+use OpenApi\Attributes\Post;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'users')]
@@ -24,7 +23,6 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[Get(security: "is_granted('ROLE_ADMIN') or object == user")]
 #[Patch(security: "is_granted('ROLE_ADMIN') or object == user")]
 #[Delete(security: "is_granted('ROLE_ADMIN') or object == user")]
-
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     final public const ROLE_USER = 'ROLE_USER';
