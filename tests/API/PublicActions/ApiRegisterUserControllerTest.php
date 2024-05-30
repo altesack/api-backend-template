@@ -3,10 +3,10 @@
 namespace App\Tests\API\PublicActions;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
-use Symfony\Component\HttpClient\Exception\ClientException;
 
-class ApiRegisterUserControllerTest extends ApiTestCase {
-    const URL = '/api/register';
+class ApiRegisterUserControllerTest extends ApiTestCase
+{
+    public const URL = '/api/register';
 
     public function testRegisterUser()
     {
@@ -18,7 +18,7 @@ class ApiRegisterUserControllerTest extends ApiTestCase {
                 'json' => [
                     'username' => 'joe',
                     'password' => 'new_password',
-                ]
+                ],
             ]
         );
 
