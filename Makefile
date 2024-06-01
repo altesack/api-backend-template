@@ -46,3 +46,11 @@ vendor: composer
 
 cs-fixer: 
 	@$(PHP_CONT) ./vendor/bin/php-cs-fixer fix
+
+test: 
+	@$(PHP_CONT) ./vendor/bin/phpunit
+
+db-build:
+	@$(SYMFONY) doctrine:schema:drop -f
+	@$(SYMFONY) doctrine:schema:update -f
+	@$(SYMFONY) doctrine:fixture:load

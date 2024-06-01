@@ -97,5 +97,6 @@ class UserResourceAdminPermissionTest extends AbstractAuthenticatedApiTestCase
         $this->assertEquals(self::SINGLE_URL, $data->{'@id'});
         $this->assertEquals('User', $data->{'@type'});
         $this->assertEquals('joe2', $data->username);
+        $this->assertNotEquals('some_password', $data->password);
     }
 }

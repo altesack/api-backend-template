@@ -90,6 +90,7 @@ class UserResourceRegularUserPermissionTest extends AbstractAuthenticatedApiTest
         $this->assertEquals(self::SINGLE_URL_ME, $data->{'@id'});
         $this->assertEquals('User', $data->{'@type'});
         $this->assertEquals('joe2', $data->username);
+        $this->assertNotEquals('some_password', $data->password);
     }
 
     public function testGetSingleNotMe(): void
