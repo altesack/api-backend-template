@@ -19,6 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: 'users')]
 #[ApiResource]
 #[GetCollection(security: "is_granted('ROLE_ADMIN')")]
+#[Post(uriTemplate: '/register')]
 #[Post(security: "is_granted('ROLE_ADMIN')")]
 #[Get(security: "is_granted('USER_GET', object)")]
 #[Patch(security: "is_granted('USER_UPDATE', object)")]

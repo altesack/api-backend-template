@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\API\PublicActions;
+namespace App\Tests\API;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use Symfony\Component\HttpClient\Exception\ClientException;

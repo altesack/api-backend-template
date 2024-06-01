@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\API\PrivateActions;
+namespace App\Tests\API;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use ApiPlatform\Symfony\Bundle\Test\Client;

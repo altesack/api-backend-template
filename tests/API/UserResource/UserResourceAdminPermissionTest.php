@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Tests\API\PrivateActions\UserResource;
+namespace App\Tests\API\UserResource;
 
 use App\DataFixtures\UserFixtures;
 use App\Entity\User;
-use App\Tests\API\PrivateActions\AbstractAuthenticatedApiTestCase;
+use App\Tests\API\AbstractAuthenticatedApiTestCase;
 
 class UserResourceAdminPermissionTest extends AbstractAuthenticatedApiTestCase
 {
@@ -27,11 +27,11 @@ class UserResourceAdminPermissionTest extends AbstractAuthenticatedApiTestCase
     {
         $response = $this->createClientWithCredentials()->request('GET', self::COLLECTION_URL)->getContent();
         $this->assertResponseIsSuccessful();
-        $data = json_decode($response);
-        $this->assertEquals('/api/contexts/User', $data->{'@context'});
-        $this->assertEquals('/api/users', $data->{'@id'});
-        $this->assertEquals('hydra:Collection', $data->{'@type'});
-        $member = $data->{'hydra:member'};
+        $data = json_decode($response, true);
+        $this->assertEquals('/api/contexts/User', $data['@context']);
+        $this->assertEquals('/api/users', $data['@id']);
+        $this->assertEquals('hydra:Collection', $data['@type']);
+        $member = $data['hydra:member'];
         $this->assertGreaterThan(0, count($member));
     }
 
@@ -51,11 +51,11 @@ class UserResourceAdminPermissionTest extends AbstractAuthenticatedApiTestCase
         )
             ->getContent();
         $this->assertResponseIsSuccessful();
-        $data = json_decode($response);
+        $data = json_decode($response, true);
 
-        $this->assertEquals('/api/contexts/User', $data->{'@context'});
-        $this->assertEquals('User', $data->{'@type'});
-        $this->assertEquals('new_joe', $data->username);
+        $this->assertEquals('/api/contexts/User', $data['@context']);
+        $this->assertEquals('User', $data['@type']);
+        $this->assertEquals('new_joe', $data['username']);
     }
 
     public function testGetSingle(): void
@@ -63,11 +63,11 @@ class UserResourceAdminPermissionTest extends AbstractAuthenticatedApiTestCase
         $response = $this->createClientWithCredentials()->request('GET', self::SINGLE_URL)->getContent();
 
         $this->assertResponseIsSuccessful();
-        $data = json_decode($response);
-        $this->assertEquals('/api/contexts/User', $data->{'@context'});
-        $this->assertEquals(self::SINGLE_URL, $data->{'@id'});
-        $this->assertEquals('User', $data->{'@type'});
-        $this->assertEquals('joe', $data->username);
+        $data = json_decode($response, true);
+        $this->assertEquals('/api/contexts/User', $data['@context']);
+        $this->assertEquals(self::SINGLE_URL, $data['@id']);
+        $this->assertEquals('User', $data['@type']);
+        $this->assertEquals('joe', $data['username']);
     }
 
     public function testDeleteSingle(): void
@@ -92,11 +92,11 @@ class UserResourceAdminPermissionTest extends AbstractAuthenticatedApiTestCase
         )->getContent();
 
         $this->assertResponseIsSuccessful();
-        $data = json_decode($response);
-        $this->assertEquals('/api/contexts/User', $data->{'@context'});
-        $this->assertEquals(self::SINGLE_URL, $data->{'@id'});
-        $this->assertEquals('User', $data->{'@type'});
-        $this->assertEquals('joe2', $data->username);
-        $this->assertNotEquals('some_password', $data->password);
+        $data = json_decode($response, true);
+        $this->assertEquals('/api/contexts/User', $data['@context']);
+        $this->assertEquals(self::SINGLE_URL, $data['@id']);
+        $this->assertEquals('User', $data['@type']);
+        $this->assertEquals('joe2', $data['username']);
+        $this->assertNotEquals('some_password', $data['password']);
     }
 }

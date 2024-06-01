@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Tests\API\PrivateActions\UserResource;
+namespace App\Tests\API\UserResource;
 
 use App\DataFixtures\UserFixtures;
 use App\Entity\User;
-use App\Tests\API\PrivateActions\AbstractAuthenticatedApiTestCase;
+use App\Tests\API\AbstractAuthenticatedApiTestCase;
 use Symfony\Component\HttpClient\Exception\ClientException;
 
 class UserResourceRegularUserPermissionTest extends AbstractAuthenticatedApiTestCase
@@ -56,11 +56,11 @@ class UserResourceRegularUserPermissionTest extends AbstractAuthenticatedApiTest
         $response = $this->createClientWithCredentials()->request('GET', self::SINGLE_URL_ME)->getContent();
 
         $this->assertResponseIsSuccessful();
-        $data = json_decode($response);
-        $this->assertEquals('/api/contexts/User', $data->{'@context'});
-        $this->assertEquals(self::SINGLE_URL_ME, $data->{'@id'});
-        $this->assertEquals('User', $data->{'@type'});
-        $this->assertEquals(UserFixtures::REGULAR_USER_NAME, $data->username);
+        $data = json_decode($response, true);
+        $this->assertEquals('/api/contexts/User', $data['@context']);
+        $this->assertEquals(self::SINGLE_URL_ME, $data['@id']);
+        $this->assertEquals('User', $data['@type']);
+        $this->assertEquals(UserFixtures::REGULAR_USER_NAME, $data['username']);
     }
 
     public function testDeleteSingle(): void
@@ -85,12 +85,12 @@ class UserResourceRegularUserPermissionTest extends AbstractAuthenticatedApiTest
         )->getContent();
 
         $this->assertResponseIsSuccessful();
-        $data = json_decode($response);
-        $this->assertEquals('/api/contexts/User', $data->{'@context'});
-        $this->assertEquals(self::SINGLE_URL_ME, $data->{'@id'});
-        $this->assertEquals('User', $data->{'@type'});
-        $this->assertEquals('joe2', $data->username);
-        $this->assertNotEquals('some_password', $data->password);
+        $data = json_decode($response, true);
+        $this->assertEquals('/api/contexts/User', $data['@context']);
+        $this->assertEquals(self::SINGLE_URL_ME, $data['@id']);
+        $this->assertEquals('User', $data['@type']);
+        $this->assertEquals('joe2', $data['username']);
+        $this->assertNotEquals('some_password', $data['password']);
     }
 
     public function testGetSingleNotMe(): void

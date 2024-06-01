@@ -13,5 +13,3 @@
 ## API Tests
 * All Api Platform tests are marked as Risky
 
-## API
-* CRUD methods write not hashed password directrly to the DB
