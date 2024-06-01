@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Tests\API\PublicActions;
+namespace App\Tests\API;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 
-class ApiRegisterUserControllerTest extends ApiTestCase
+class UserResourceRegisterNewTest extends ApiTestCase
 {
     public const URL = '/api/register';
 
@@ -15,15 +15,20 @@ class ApiRegisterUserControllerTest extends ApiTestCase
             'POST',
             self::URL,
             [
+                'headers' => ['Content-Type' => 'application/ld+json'],
                 'json' => [
                     'username' => 'joe2',
                     'password' => 'new_password',
                 ],
             ]
         );
+        $response = $client->getResponse()->getContent();
 
-        $data = json_decode($client->getResponse()->getContent(), true);
         $this->assertResponseIsSuccessful();
-        $this->assertCount(0, $data);
+
+        $data = json_decode($response, true);
+        $this->assertEquals('/api/contexts/User', $data['@context']);
+        $this->assertEquals('User', $data['@type']);
+        $this->assertEquals('joe2', $data['username']);
     }
 }

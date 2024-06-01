@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\API\PrivateActions\UserResource;
+namespace App\Tests\API\UserResource;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\User;

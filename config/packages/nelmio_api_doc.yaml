@@ -40,24 +40,4 @@ nelmio_api_doc:
                         '400':
                             description: Invalid JSON.
                     security: []
-            /api/register:
-                post:
-                    summary: Register new user.
-                    requestBody:
-                        content:
-                            application/json:
-                                schema:
-                                    properties:
-                                        username:
-                                            type: string
-                                        password:
-                                            type: string
-                                    type: object
-                    responses:
-                        '200':
-                            description: OK
-                        '401':
-                            description: Invalid credentials
-                        '400':
-                            description: Invalid JSON.
-                    security: []
+
