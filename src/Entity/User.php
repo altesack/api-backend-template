@@ -9,6 +9,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Repository\UserRepository;
+use App\State\UserHashPasswordStateProcessor;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -20,9 +21,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource]
 #[GetCollection(security: "is_granted('ROLE_ADMIN')")]
 #[Post(uriTemplate: '/register')]
-#[Post(security: "is_granted('ROLE_ADMIN')")]
+#[Post(
+    security: "is_granted('ROLE_ADMIN')",
+    processor: UserHashPasswordStateProcessor::class,
+)]
 #[Get(security: "is_granted('USER_GET', object)")]
-#[Patch(security: "is_granted('USER_UPDATE', object)")]
+#[Patch(
+    security: "is_granted('USER_UPDATE', object)",
+    processor: UserHashPasswordStateProcessor::class,
+)]
 #[Delete(security: "is_granted('USER_DELETE', object)")]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {

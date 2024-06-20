@@ -10,9 +10,12 @@ use Doctrine\Persistence\ObjectManager;
 class UserFixtures extends Fixture
 {
     public const ADMIN_USER_NAME = 'admin';
-    public const ADMIN_PASSWORD = '111';
+    public const ADMIN_PASSWORD = 'some_password';
     public const REGULAR_USER_NAME = 'joe';
-    public const REGULAR_USER_PASSWORD = '222';
+    public const REGULAR_USER_PASSWORD = 'some_password';
+
+    public const NEW_USER_NAME = 'jey';
+    public const NEW_USER_PASSWORD = 'some_password';
 
     public function __construct(
         private CreateUserAction $createUserAction,
@@ -22,11 +25,13 @@ class UserFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         foreach ($this->getData() as $userData) {
-            $this->createUserAction->create(
+            $user = $this->createUserAction->create(
                 $userData['username'],
                 $userData['password'],
                 $userData['roles'],
             );
+
+            $this->addReference('user_'.$userData['username'], $user);
         }
     }
 
@@ -41,6 +46,12 @@ class UserFixtures extends Fixture
         yield [
             'username' => self::REGULAR_USER_NAME,
             'password' => self::REGULAR_USER_PASSWORD,
+            'roles' => [User::ROLE_USER],
+        ];
+
+        yield [
+            'username' => self::NEW_USER_NAME,
+            'password' => self::NEW_USER_PASSWORD,
             'roles' => [User::ROLE_USER],
         ];
     }

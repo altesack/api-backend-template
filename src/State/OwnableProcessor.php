@@ -4,26 +4,23 @@ namespace App\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
-use App\Entity\User;
+use App\Entity\OwnableInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class UserHashPasswordStateProcessor implements ProcessorInterface
+class OwnableProcessor implements ProcessorInterface
 {
     public function __construct(
+        private TokenStorageInterface $tokenStorage,
         private EntityManagerInterface $entityManager,
-        private UserPasswordHasherInterface $passwordHasher,
     ) {
     }
 
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): mixed
     {
-        /** @var User @data */
-        $hashedPassword = $this->passwordHasher->hashPassword(
-            $data,
-            $data->getPassword()
-        );
-        $data->setPassword($hashedPassword);
+        $user = $this->tokenStorage->getToken()->getUser();
+        /* @var OwnableInterface $data */
+        $data->setOwner($user);
 
         $this->entityManager->persist($data);
         $this->entityManager->flush();
