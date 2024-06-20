@@ -9,11 +9,11 @@ use Symfony\Component\HttpClient\Exception\ClientException;
 
 class UserResourceRegularUserPermissionTest extends AbstractAuthenticatedApiTestCase
 {
-    public const USER_NAME = UserFixtures::REGULAR_USER_NAME;
-    public const PASSWORD = UserFixtures::REGULAR_USER_PASSWORD;
+    public const USER_NAME = UserFixtures::NEW_USER_NAME;
+    public const PASSWORD = UserFixtures::NEW_USER_PASSWORD;
     public const COLLECTION_URL = '/api/users';
     public const SINGLE_URL_NOT_ME = '/api/users/1';
-    public const SINGLE_URL_ME = '/api/users/2';
+    public const SINGLE_URL_ME = '/api/users/3';
 
     protected function getUsername(): string
     {
@@ -37,7 +37,7 @@ class UserResourceRegularUserPermissionTest extends AbstractAuthenticatedApiTest
         $this->expectException(ClientException::class);
         $data = $this->createClientWithCredentials()->request(
             'POST',
-            '/api/users',
+            self::COLLECTION_URL,
             [
                 'headers' => ['Content-Type' => 'application/ld+json'],
                 'json' => [
@@ -60,7 +60,7 @@ class UserResourceRegularUserPermissionTest extends AbstractAuthenticatedApiTest
         $this->assertEquals('/api/contexts/User', $data['@context']);
         $this->assertEquals(self::SINGLE_URL_ME, $data['@id']);
         $this->assertEquals('User', $data['@type']);
-        $this->assertEquals(UserFixtures::REGULAR_USER_NAME, $data['username']);
+        $this->assertEquals(UserFixtures::NEW_USER_NAME, $data['username']);
     }
 
     public function testDeleteSingle(): void

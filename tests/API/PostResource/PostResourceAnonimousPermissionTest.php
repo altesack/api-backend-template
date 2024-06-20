@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Tests\API\UserResource;
+namespace App\Tests\API\PostResource;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
-use App\Entity\User;
 use Symfony\Component\HttpClient\Exception\ClientException;
 
-class UserResourceAnonimousPermissionTest extends ApiTestCase
+class PostResourceAnonimousPermissionTest extends ApiTestCase
 {
     public const COLLECTION_URL = '/api/users';
     public const SINGLE_URL = '/api/users/1';
@@ -27,9 +26,8 @@ class UserResourceAnonimousPermissionTest extends ApiTestCase
             [
                 'headers' => ['Content-Type' => 'application/ld+json'],
                 'json' => [
-                    'username' => 'new_joe',
-                    'password' => 'some_password',
-                    'roles' => [User::ROLE_USER],
+                    'title' => 'new title',
+                    'content' => 'new content',
                 ],
             ]
         )

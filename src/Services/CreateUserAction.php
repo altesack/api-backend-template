@@ -14,7 +14,7 @@ class CreateUserAction
     ) {
     }
 
-    public function create(string $username, string $plainTextPassword, array $roles)
+    public function create(string $username, string $plainTextPassword, array $roles): User
     {
         $user = (new User())
             ->setUsername($username)
@@ -29,5 +29,7 @@ class CreateUserAction
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
+
+        return $user;
     }
 }
