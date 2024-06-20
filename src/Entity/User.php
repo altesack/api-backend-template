@@ -8,8 +8,10 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use App\Model\UserRegisterDTO;
 use App\Repository\UserRepository;
 use App\State\UserHashPasswordStateProcessor;
+use App\State\UserRegisterStateProcessor;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -20,7 +22,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: 'users')]
 #[ApiResource]
 #[GetCollection(security: "is_granted('ROLE_ADMIN')")]
-#[Post(uriTemplate: '/register')]
+#[Post(
+    uriTemplate: '/register',
+    input: UserRegisterDTO::class,
+    processor: UserRegisterStateProcessor::class,
+)]
 #[Post(
     security: "is_granted('ROLE_ADMIN')",
     processor: UserHashPasswordStateProcessor::class,
